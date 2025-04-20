@@ -44,8 +44,8 @@ export async function updateTodo(req: Request<{ id: string }, any, TodoType>, re
     }
 
     res.status(200).json({ message: 'Todo updated successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update Todo' });
+  } catch (err: any) {
+    res.status(500).json({ message: 'Failed to update Todo', error: err.message });
   }
 }
 
