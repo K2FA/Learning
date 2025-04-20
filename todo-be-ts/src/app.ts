@@ -1,11 +1,10 @@
-import express, { Request, Response } from 'express';
-
-import todoRoute from './routes/api.route';
+import express from 'express';
+import todoRoutes from './routes/todo.route'; // assuming the path
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); // To parse JSON bodies
 
-app.get('/api/todos', todoRoute);
+app.use('/api/todos', todoRoutes);
 
 export default app;
