@@ -18,6 +18,7 @@ const pool = createPool({
   password: parsedUrl.password,
   database: parsedUrl.pathname.substring(1),
   connectionLimit: 5,
+  multipleStatements: true,
 });
 
 export default pool;
