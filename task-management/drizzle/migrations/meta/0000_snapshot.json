@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "6c66d43b-768c-4875-9a4e-992e4bf6b9a7",
+  "id": "09c71ec5-99d8-48b3-b094-ea7491df2dda",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "auth_tokens": {
-      "name": "auth_tokens",
+    "sessions": {
+      "name": "sessions",
       "columns": {
         "id": {
           "name": "id",
@@ -18,7 +18,7 @@
           "name": "user_id",
           "type": "int",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "token": {
@@ -35,13 +35,20 @@
           "notNull": false,
           "autoincrement": false,
           "default": "(now())"
+        },
+        "expired_at": {
+          "name": "expired_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "auth_tokens_user_id_users_id_fk": {
-          "name": "auth_tokens_user_id_users_id_fk",
-          "tableFrom": "auth_tokens",
+        "sessions_user_id_users_id_fk": {
+          "name": "sessions_user_id_users_id_fk",
+          "tableFrom": "sessions",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -54,16 +61,16 @@
         }
       },
       "compositePrimaryKeys": {
-        "auth_tokens_id": {
-          "name": "auth_tokens_id",
+        "sessions_id": {
+          "name": "sessions_id",
           "columns": [
             "id"
           ]
         }
       },
       "uniqueConstraints": {
-        "auth_tokens_token_unique": {
-          "name": "auth_tokens_token_unique",
+        "sessions_token_unique": {
+          "name": "sessions_token_unique",
           "columns": [
             "token"
           ]

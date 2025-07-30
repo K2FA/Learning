@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
 import Pool from '../config/db.config';
 import { UserType } from '../types/user.type';
+import { hashPassword } from '../utils/auth.utils';
 
 export const getAllUser = async (): Promise<UserType[]> => {
   const conn = await Pool.getConnection();
@@ -13,12 +13,12 @@ export const getAllUser = async (): Promise<UserType[]> => {
 export const createUsers = async (user: UserType): Promise<{ id: number }> => {
   const conn = await Pool.getConnection();
 
-  const hashPassword = await bcrypt.hash(user.password, 10);
+  const hash = await hashPassword(user.password);
 
   const data = await conn.query('INSERT INTO users (username, email, password) VALUES (?,?,?)', [
     user.username,
     user.email,
-    hashPassword,
+    hash,
   ]);
 
   conn.release();
@@ -36,12 +36,12 @@ export const deleteUsers = async (id: number): Promise<boolean> => {
 export const updateUsers = async (id: number, user: UserType): Promise<boolean> => {
   const conn = await Pool.getConnection();
 
-  const hashPassword = await bcrypt.hash(user.password, 10);
+  const hash = await hashPassword(user.password);
 
   const updateData = await conn.query('UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?', [
     user.username,
     user.email,
-    hashPassword,
+    hash,
     id,
   ]);
 

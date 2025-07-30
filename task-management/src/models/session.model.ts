@@ -1,11 +1,10 @@
 import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
 import { userTable } from './user.model';
 
-export const authTokensTable = mysqlTable('auth_tokens', {
+export const sessionTable = mysqlTable('sessions', {
   id: int('id').primaryKey().autoincrement(),
-  userId: int('user_id')
-    .references(() => userTable.id)
-    .notNull(),
-  token: varchar('token', { length: 255 }).notNull().unique(),
+  userId: int('user_id').references(() => userTable.id),
+  token: varchar('token', { length: 255 }).unique().notNull(),
   createdAt: timestamp('created_at').defaultNow(),
+  expiredAt: timestamp('expired_at').notNull(),
 });
