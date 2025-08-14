@@ -1,5 +1,5 @@
 export type RegisterType = {
-  username: string;
+  fullname: string;
   email: string;
   password: string;
   create_at?: Date;

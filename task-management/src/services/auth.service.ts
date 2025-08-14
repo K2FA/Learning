@@ -19,16 +19,16 @@ export const registerService = async (
       throw new Error('Email already registered');
     }
 
-    const [usernameCheck] = await conn.query('SELECT id FROM users WHERE username = ? LIMIT 1', [authData.username]);
+    const [fullnameCheck] = await conn.query('SELECT id FROM users WHERE fullname = ? LIMIT 1', [authData.fullname]);
 
-    if (usernameCheck) {
-      throw new Error('Username already taken');
+    if (fullnameCheck) {
+      throw new Error('fullname already exist');
     }
 
     const passwordHash = await hashPassword(authData.password);
 
-    const result = await conn.query('INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)', [
-      authData.username,
+    const result = await conn.query('INSERT INTO users (fullname, email, password, created_at) VALUES (?, ?, ?, ?)', [
+      authData.fullname,
       authData.email,
       passwordHash,
       new Date(),

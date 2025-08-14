@@ -18,9 +18,9 @@ export const loginController: RequestHandler = async (req: Request, res: Respons
 };
 
 export const registerController: RequestHandler = async (req: Request, res: Response) => {
-  const { username, email, password, confirmPassword }: RegisterType & { confirmPassword: string } = req.body;
+  const { fullname, email, password, confirmPassword }: RegisterType & { confirmPassword: string } = req.body;
 
-  if (!username || !email || !password || !confirmPassword) {
+  if (!fullname || !email || !password || !confirmPassword) {
     res.status(400).json({ status: 'failed', message: 'All field are required' });
     return;
   }
@@ -34,7 +34,7 @@ export const registerController: RequestHandler = async (req: Request, res: Resp
   }
 
   try {
-    const { token, expiresAt } = await registerService({ username, email, password });
+    const { token, expiresAt } = await registerService({ fullname, email, password });
 
     res.status(201).json({
       status: 'success',
@@ -50,7 +50,7 @@ export const registerController: RequestHandler = async (req: Request, res: Resp
         status: 'failed',
         message: error.message,
       });
-    } else if (error.message === 'Username already taken') {
+    } else if (error.message === 'fullname already exist') {
       res.status(409).json({
         status: 'failed',
         message: error.message,

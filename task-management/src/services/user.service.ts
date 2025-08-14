@@ -15,8 +15,8 @@ export const createUsers = async (user: UserType): Promise<{ id: number }> => {
 
   const hash = await hashPassword(user.password);
 
-  const data = await conn.query('INSERT INTO users (username, email, password) VALUES (?,?,?)', [
-    user.username,
+  const data = await conn.query('INSERT INTO users (fullname, email, password) VALUES (?,?,?)', [
+    user.fullname,
     user.email,
     hash,
   ]);
@@ -38,8 +38,8 @@ export const updateUsers = async (id: number, user: UserType): Promise<boolean> 
 
   const hash = await hashPassword(user.password);
 
-  const updateData = await conn.query('UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?', [
-    user.username,
+  const updateData = await conn.query('UPDATE users SET fullname = ?, email = ?, password = ? WHERE id = ?', [
+    user.fullname,
     user.email,
     hash,
     id,

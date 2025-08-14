@@ -15,6 +15,13 @@
       "when": 1753852534652,
       "tag": "0001_authentication2",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1755142665201,
+      "tag": "0002_fullnameChange",
+      "breakpoints": true
     }
   ]
 }

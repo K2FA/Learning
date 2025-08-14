@@ -1,6 +1,6 @@
 export interface UserType {
   id: number;
-  username: string;
+  fullname: string;
   email: string;
   password: string;
   created_at: Date;
