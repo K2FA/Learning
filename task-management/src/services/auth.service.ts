@@ -41,7 +41,7 @@ export const registerService = async (
 
     await conn.query(
       `INSERT INTO sessions (user_id, token, expires_at) 
-       VALUES (?, ?, ?)`,
+      VALUES (?, ?, ?)`,
       [userId, token, expiresAt],
     );
 
@@ -56,29 +56,41 @@ export const registerService = async (
   }
 };
 
-export const loginService = async (authData: LoginType) => {
-  const conn = await pool.getConnection();
+export const loginService = async (authData: LoginType): Promise<{ token: string; expiresAt: Date }> => {
+  let conn: mariadb.PoolConnection | null = null;
 
-  const userRows = await conn.query('SELECT * FROM users WHERE email = ? LIMIT 1', [authData.email]);
+  try {
+    conn = await pool.getConnection();
 
-  if (userRows.length === 0) {
-    throw new Error('Invalid credentials');
+    await conn.beginTransaction();
+
+    const userRows = await conn.query('SELECT * FROM users WHERE email = ? LIMIT 1', [authData.email]);
+
+    if (userRows.length === 0) {
+      throw new Error('Invalid credentials');
+    }
+
+    const user = userRows[0];
+
+    const passwordMatch = await verifyPassword(authData.password, user.password);
+    if (!passwordMatch) {
+      throw new Error('Invalid credentials');
+    }
+
+    const token = generateToken();
+    const expiresAt = getTokenExpiration();
+
+    await conn.query('INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)', [user.id, token, expiresAt]);
+
+    await conn.commit();
+
+    return { token, expiresAt };
+  } catch (error) {
+    if (conn) conn.rollback();
+    throw error;
+  } finally {
+    if (conn) conn.release();
   }
-
-  const user = userRows[0];
-
-  const passwordMatch = await verifyPassword(authData.password, user.password);
-  if (!passwordMatch) {
-    throw new Error('Invalid credentials');
-  }
-
-  const token = generateToken();
-  const expiresAt = getTokenExpiration();
-
-  await conn.query('INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)', [user.id, token, expiresAt]);
-
-  conn.release();
-  return { token, expiresAt };
 };
 
 export const logoutService = async (token: string): Promise<void> => {
