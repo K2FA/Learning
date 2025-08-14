@@ -1,0 +1,1 @@
+ALTER TABLE `sessions` RENAME COLUMN `expired_at` TO `expires_at`;

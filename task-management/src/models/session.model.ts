@@ -6,5 +6,5 @@ export const sessionTable = mysqlTable('sessions', {
   userId: int('user_id').references(() => userTable.id),
   token: varchar('token', { length: 255 }).unique().notNull(),
   createdAt: timestamp('created_at').defaultNow(),
-  expiredAt: timestamp('expired_at').notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
 });
