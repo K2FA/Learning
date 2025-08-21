@@ -3,6 +3,7 @@ import pool from '../config/db.config';
 import { LoginType, RegisterType } from '../types/auth.type';
 import { generateToken, getTokenExpiration, hashPassword, verifyPassword } from '../utils/auth.utils';
 
+// Register logic
 export const registerService = async (
   authData: RegisterType,
 ): Promise<{ userId: number; token: string; expiresAt: Date }> => {
@@ -56,6 +57,7 @@ export const registerService = async (
   }
 };
 
+// Login logic
 export const loginService = async (authData: LoginType): Promise<{ token: string; expiresAt: Date }> => {
   let conn: mariadb.PoolConnection | null = null;
 
@@ -93,6 +95,7 @@ export const loginService = async (authData: LoginType): Promise<{ token: string
   }
 };
 
+// Logout logic
 export const logoutService = async (token: string): Promise<void> => {
   if (!/^[a-f0-9]{64}$/i.test(token)) {
     throw new Error('Invalid token format');

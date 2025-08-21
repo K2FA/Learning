@@ -22,6 +22,13 @@
       "when": 1755142665201,
       "tag": "0002_fullnameChange",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1755781303258,
+      "tag": "0003_rolePermission",
+      "breakpoints": true
     }
   ]
 }
