@@ -5,7 +5,7 @@ export const getAllRoleController = async (req: Request, res: Response) => {
   try {
     const roles = await getAllRoleService();
 
-    res.status(200).json({ message: 'Get all roles successfully', roles });
+    res.status(200).json(roles);
   } catch (err) {
     res.status(500).json({ message: 'Internal Server Error' });
   }

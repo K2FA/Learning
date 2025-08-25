@@ -1,5 +1,5 @@
 import pool from '../config/db.config';
-import { RoleType } from '../types/role.type';
+import { RoleType } from '../types/role-permission.type';
 
 export const getAllRoleService = async (): Promise<RoleType> => {
   const conn = await pool.getConnection();
